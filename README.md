@@ -20,7 +20,7 @@ Un gitignore est disponible
 
 
 
-## config-1
+## 1. terraform-docker example
 
 - `tf plan`  pour afficher son *execution plan*
 - `tf apply -auto-approve` pour apply et créer<br>
@@ -134,7 +134,8 @@ tf apply -var "container_name=YetAnotherName"
 ```
 
 ### Outputs
-Un output a une description et une valeur non-explicite.
+On ajoute un fichier `outputs.tf` qui contient les blocs outputs.<br>
+Un output a une description et une valeur à partir des ressources dans `main.tf`.
 ```terraform
 output "hello" {
     description = "..."
@@ -142,11 +143,61 @@ output "hello" {
 }
 ```
 
-## Cycle en 5 étapes
+### Un cycle complet avec terraform-cli
 ```sh
+# créer
 tf init
+tf init -upgrade                    # si modifications du provider
 tf fmt
 tf validate
-tf plan
-tf apply -auto-approve
+tf plan                             # -var 'a=b' -var 'b=c' en option
+tf apply -auto-approve              # -var 'a=b' -var 'b=c' en option
+
+# inspecter l'état actuel
+tf plan                             # fait refresh et affiche les modifications
+tf refresh && tf show               # fait refresh et affiche 'terraform.tfstate' au format HCL
+tf state list
+tf state show my_ec2
+
+# détruire
+tf apply -auto-approve -destroy     # -var 'a=b' -var 'b=c' en option
 ```
+
+**Note sur `refresh`**
+Le but long-terme est que seuls terraform `plan` et `apply` soient nécessaires (voir
+[cette issue](https://github.com/hashicorp/terraform/issues/26093)).<br>
+`refresh` n'affiche donc pas les modifications, mais `plan` et `apply` font automatiquement
+un refresh et affichent les modifications d'état.
+
+### Provisionner des VM / des containers
+Pour provisionner des VM :
+- soit on écrit un script shell autour du CLI de chaque provider
+- soit on écrit du code autour du SDK de chaque provider
+- soit on utilise Terraform 🔥
+On comprend facilement l'intérêt.
+
+> ~Mais pourquoi provisionner des containers docker via un fichier `main.tf` quand on peut
+faire pareil avec un docker-compose ?~
+
+En réalité, personne n'utilise des containers seuls, la bonne question est
+
+> Pourquoi provisionner des containers docker via un fichier `main.tf` quand on peut
+faire pareil avec un helm chart ?
+- on peut gérer le state de nos kubes, mais est-ce utile ?
+- et + de gens peuvent lire le helm chat que le fichier HCL
+
+**C'est justement pour ça qu'on ne déploie pas des kubes avec terraform.**<br>
+On déploie uniquement un cluster, et on installe Helm. (Ensuite on laisse Helm s'occuper
+de déployer les kubes).
+
+Voir aussi
+- https://blog.zwindler.fr/talks/osxp-2021-ciel-mon-kube-mine-bitcoins/
+- https://blog.zwindler.fr/2018/02/06/se-simplifier-kubernetes-helm-charts/
+
+
+
+## 2. terraform-aws example (instanciate one ec2)
+
+### Lien entre AWS et Terraform
+Il faut avoir fait `aws configure` et entré sa clé d'accès avec les bonnes permissions.<br>
+Dans la section `provider "aws" {}` on précise `profile = "default"`.
