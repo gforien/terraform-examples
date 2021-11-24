@@ -198,6 +198,17 @@ Voir aussi
 
 ## 2. terraform-aws example (instanciate one ec2)
 
+📚 **Sources**
+- **aug.2020** → [hashicorp/aws/two-tier/main.tf](https://github.com/hashicorp/terraform-provider-aws/blob/main/examples/two-tier/main.tf)
+- **oct. 2021** → [josh-tracy/tf-helm-eks-jenkins/main.tf](https://github.com/Josh-Tracy/Terraform-Helm-EKS-Jenkins/blob/main/main.tf)
+
 ### Lien entre AWS et Terraform
 Il faut avoir fait `aws configure` et entré sa clé d'accès avec les bonnes permissions.<br>
 Dans la section `provider "aws" {}` on précise `profile = "default"`.
+
+### Steps
+1. Créer le VPC et ce qui en dépend (IG, Route table, SG)
+2. Créer le subnet et ce qui en dépend (NIC, Route table association)
+
+
+Voir aussi https://github.com/gnokoheat/ecs-with-codepipeline-example-by-terraform
