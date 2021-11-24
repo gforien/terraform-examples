@@ -2,9 +2,9 @@
 
 ## aws-full-ec2
 
-```terraform
+```powershell
 terraform apply -auto-approve `
-    -var "key_name=$AWS_KEYNAME"
+    -var "key_name=$AWS_KEYNAME" `
     -var "zone_id=$AWS_ZONE_ID" `
-    -var 'domain=salutsalut.gforien.com' `
+    -var "domain=salutsalut.gforien.com" `
 ```
