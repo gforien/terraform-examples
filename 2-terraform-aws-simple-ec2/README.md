@@ -1,8 +1,9 @@
-# one-ec2-example
+# terraform-examples
 
-```sh
+## aws-simple-ec2
+
+```terraform
 terraform apply -auto-approve `
-    -var "zone_id=$AWS_ZONE_ID" `
-    -var 'domain=salutsalut.gforien.com' `
-    -var "key_name=$AWS_KEYNAME"
+    -var "key=$AWS_KEYNAME" `
+    -var "sg=https-security-group"
 ```

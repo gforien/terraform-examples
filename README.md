@@ -1,4 +1,4 @@
-# terraform-docker
+# terraform-examples
 
 ## Introduction
 Déployer une configuration avec Terraform =
@@ -196,7 +196,7 @@ Voir aussi
 
 
 
-## 2. terraform-aws example (instanciate one ec2)
+## 3. terraform-aws-full-ec2 example
 
 📚 **Sources**
 - **aug.2020** → [hashicorp/aws/two-tier/main.tf](https://github.com/hashicorp/terraform-provider-aws/blob/main/examples/two-tier/main.tf)
